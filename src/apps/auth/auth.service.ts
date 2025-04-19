@@ -13,13 +13,13 @@ import { RegisterDto } from './request/register.dto';
 import { RegisterResponse } from './response/register.response';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { MailerService } from '@nestjs-modules/mailer';
 import { createTransaction } from 'src/utils/create-transaction.util';
 import { v4 as uuidv4 } from 'uuid';
 import { ConfirmEmailDto } from './request/confirm-email.dto';
 import { SimpleMessageResponse } from '../shared/response/simple-message.response';
 import { ForgetPasswordDto } from './request/forget-password.dto';
 import { ResetPasswordDto } from './request/reset-password.dto';
+import { MailerService } from '../shared/mailer/mailer.service';
 
 @Injectable()
 export class AuthService {
@@ -89,15 +89,15 @@ export class AuthService {
                 confirmationToken,
             });
 
-            await this.mailService.sendMail({
-                to: email,
-                subject: 'Confirme seu email',
-                template: 'register-email',
-                context: {
+            await this.mailService.sendMail(
+                email,
+                'Confirme seu email',
+                'register-email',
+                {
                     name,
                     url: confirmationToken,
-                },
-            });
+                }
+            );
 
             queryRunner.commitTransaction();
             return {
@@ -155,15 +155,15 @@ export class AuthService {
                 resetPasswordToken: newToken,
             });
 
-            await this.mailService.sendMail({
-                to: email,
-                subject: 'Resetar senha',
-                template: 'reset-password',
-                context: {
+            await this.mailService.sendMail(
+                email,
+                'Resetar senha',
+                'reset-password',
+                {
                     user: user.name,
                     url: newToken,
                 },
-            });
+            );
         }
 
         return { message: 'Email enviado.' };

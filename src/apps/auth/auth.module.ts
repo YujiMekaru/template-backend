@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Users } from 'src/data/entities/users.entity';
 import { UsersModule } from '../users/users.module';
+import { MailerModule } from '../shared/mailer/mailer.module';
 
 @Module({
     imports: [
@@ -23,6 +24,7 @@ import { UsersModule } from '../users/users.module';
             inject: [ConfigService],
         }),
         UsersModule,
+        MailerModule,
     ],
     controllers: [AuthController],
     providers: [AuthService],

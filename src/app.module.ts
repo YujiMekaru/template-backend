@@ -5,16 +5,15 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './apps/auth/auth.module';
 import { UsersModule } from './apps/users/users.module';
 import { JwtStrategy } from './apps/auth/jwt/jwt.strategy';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { mailerConfig } from './config/mailer.config';
+import { MailerModule } from './apps/shared/mailer/mailer.module';
 
 @Module({
     imports: [
         ConfigModule.forRoot({ isGlobal: true }),
         TypeOrmModule.forRoot({ ...databaseOptions, autoLoadEntities: true }),
-        MailerModule.forRoot(mailerConfig),
         AuthModule,
         UsersModule,
+        MailerModule,
     ],
     controllers: [],
     providers: [JwtStrategy],
