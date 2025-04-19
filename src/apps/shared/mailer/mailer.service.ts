@@ -7,7 +7,7 @@ import * as path from 'path';
 @Injectable()
 export class MailerService {
   private transporter: nodemailer.Transporter;
-  private readonly templatesDir = path.resolve(__dirname, '../../mail-templates');
+  private readonly templatesDir = path.resolve(__dirname, 'mail-templates');
 
   constructor(private config: ConfigService) {
     this.transporter = nodemailer.createTransport({
@@ -56,6 +56,7 @@ export class MailerService {
         template,
         context,
       } as any);
+      console.log(`Mail sent to: `, to);
     } catch (err) {
       console.error('❌ Failed to send email:', err);
       throw new InternalServerErrorException('Failed to send email');
